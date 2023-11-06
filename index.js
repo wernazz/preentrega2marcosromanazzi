@@ -246,32 +246,49 @@ const filteredProducts = products.filter(product => {
     return product.category === "women's clothing" || product.category === 'jewelry';
 });
 
-
-function pedirNombre() {
-    let nombre = prompt("Hola, por favor, ingrese su nombre:");
-    while (!nombre || nombre === "") {
-        alert("Ingrese un nombre válido.");
-        nombre = prompt("Hola, por favor, ingrese su nombre:");
-    }
-    return nombre;
+function mostrarBienvenida() {
+    alert("¡Bienvenido a nuestro ecommerce!");
 }
 
-function mostrarBienvenida(nombre) {
-    alert(`Bienvenido a nuestro ecommerce, ${nombre}`);
-}
+mostrarBienvenida();
 
 const productNames = filteredProducts.map(product => product.title.toLowerCase());
-const userInput = prompt("Productos disponibles:\n" + productNames.join("\n") + "\n\n¿Qué producto deseas comprar?")?.toLowerCase(); // Convertir a minúsculas
+let userInput = prompt("Productos disponibles:\n" + productNames.join("\n") + "\n\n¿Qué producto deseas comprar?")?.toLowerCase(); 
 
-const selectedProduct = filteredProducts.find(product => product.title.toLowerCase() === userInput);
+while (true) {
+    const selectedProduct = filteredProducts.find(product => product.title.toLowerCase() === userInput);
 
-if (selectedProduct) {
-    alert("Has seleccionado: " + selectedProduct.title + "\nPrecio: $" + selectedProduct.price);
-} else {
-    const availableProducts = filteredProducts.map(product => product.title).join("\n");
-    alert("Producto no encontrado. Por favor, selecciona un producto válido.\nProductos disponibles:\n" + availableProducts);
+    if (selectedProduct) {
+        const confirmacion = confirm(`Has seleccionado:\nNombre: ${selectedProduct.title}\nDescripción: ${selectedProduct.description}\nPrecio: $${selectedProduct.price}\n\n¿Deseas completar la compra?`);
+
+        if (confirmacion) {
+            const fechaEntrega = new Date();
+            fechaEntrega.setDate(fechaEntrega.getDate() + 7); // supongamos que la entrega será en 7 días
+            const entregaConfirmada = confirm(`Gracias por tu compra.\nFecha de entrega estimada: ${fechaEntrega.toDateString()}\n\n¿Confirmar la entrega?`);
+
+            if (entregaConfirmada) {
+                alert("La entrega ha sido confirmada. Gracias por tu compra.");
+            } else {
+                alert("La entrega no ha sido confirmada. Por favor, contáctanos si deseas realizar la entrega en otro momento.");
+            }
+            break;
+        } else {
+            alert("Gracias por tu interacción.");
+            break;
+        }
+    } else {
+        const availableProducts = filteredProducts.map(product => product.title).join("\n");
+        userInput = prompt("Producto no encontrado. Por favor, selecciona un producto válido.\nProductos disponibles:\n" + availableProducts)?.toLowerCase();
+    }
 }
 
-let nombreUsuario = pedirNombre();
-mostrarBienvenida(nombreUsuario);
+
+
+
+
+
+
+
+
+
 
